@@ -1,0 +1,7 @@
+pandas==2.3.1
+folium==0.20.0
+plotly==6.2.0
+haversine==2.9.0
+openmeteo-requests==1.6.0
+requests-cache==1.2.1
+retry-requests==2.0.0
