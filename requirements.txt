@@ -5,3 +5,4 @@ haversine==2.9.0
 openmeteo-requests==1.6.0
 requests-cache==1.2.1
 retry-requests==2.0.0
+nbformat==5.10.4

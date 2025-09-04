@@ -11,7 +11,7 @@ class Weather():
     def __init__ (self, lat:float, lon:float):
         self.lat = lat # Latitude
         self.lon = lon # Longitude
-        self.tz = "America/Sao_Paulo"
+        self.tz = "America/New_York"
         self.cache_session = requests_cache.CachedSession('.cache', expire_after=-1)  # Configura uma sessão de cache para armazenar as respostas da API indefinidamente
         self.retry_session = retry(self.cache_session, retries=5, backoff_factor=0.2)  # Configura a sessão de cache para tentar novamente até 5 vezes com um fator de backoff
         self.openmeteo = openmeteo_requests.Client(session=self.retry_session)  # Cria um cliente da Open-Meteo API usando a sessão configurada
@@ -24,7 +24,7 @@ class Weather():
             "start_date": data_inicio,  # Data de início do período de interesse
             "end_date": data_fim,  # Data de término do período de interesse
             "daily": ["weather_code", "temperature_2m_mean"],  # Variáveis diárias solicitadas (código do clima e temperatura média)
-            "timezone": "America/Sao_Paulo"  # Fuso horário a ser utilizado
+            "timezone": "America/New_York"  # Fuso horário a ser utilizado
         }
         responses = self.openmeteo.weather_api(self.url, params=params)  # Faz a solicitação à API com os parâmetros definidos
         # Processa a primeira localização.
@@ -42,12 +42,12 @@ class Weather():
             inclusive="left"  # Inclui o limite inferior do intervalo
         )}
         daily_data["weather_code"] = daily_weather_code  # Adiciona o código do clima ao dicionário
-        daily_data["temperature_2m_mean"] = daily_temperature_2m_mean  # Adiciona a temperatura média ao dicionário
+        # daily_data["temperature_2m_mean"] = daily_temperature_2m_mean  # Adiciona a temperatura média ao dicionário
 
         # Converte os dados diários em um DataFrame do pandas
         daily_dataframe = pd.DataFrame(data=daily_data)
         # Renomeia as colunas
-        daily_dataframe.columns = ['data', 'clima', 'temperatura media']
+        daily_dataframe.columns = ['data', 'clima']#, 'temperatura media']
         # Trata a coluna de códigos de clima para que seja possível converter de código de clima para texto/descrição do clima
         daily_dataframe['clima'] = daily_dataframe['clima'].apply(lambda x: str(int(x)))
 
